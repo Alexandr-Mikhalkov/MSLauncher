@@ -1,0 +1,288 @@
+﻿<Window x:Class="MSLauncher.UI.View.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MSLauncher.UI.View"
+        xmlns:converters="clr-namespace:MSLauncher.UI.Converters"
+        xmlns:utils="clr-namespace:MSLauncher.UI.Utils"
+        mc:Ignorable="d"
+        Title="MSLauncher" 
+        Height="396" Width="400" 
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#2D2D30"/>
+        <SolidColorBrush x:Key="ControlBackgroundColor" Color="#3C3C3C"/>
+        <SolidColorBrush x:Key="ControlHoverBackgroundColor" Color="#4A4A4A"/>
+        <SolidColorBrush x:Key="PrimaryAccentColor" Color="#007ACC"/>
+        <SolidColorBrush x:Key="PrimaryTextColor" Color="#F1F1F1"/>
+        <SolidColorBrush x:Key="SecondaryTextColor" Color="#A0A0A0"/>
+
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+
+        <Style TargetType="Button" x:Key="BaseButtonStyle">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextColor}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="PrimaryButtonStyle" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource PrimaryAccentColor}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#005A9E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#004578"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ControlBackgroundColor}"/>
+                                <Setter Property="Foreground" Value="{StaticResource SecondaryTextColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="SecondaryButtonStyle" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource ControlBackgroundColor}"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ControlHoverBackgroundColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource ControlBackgroundColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="2,0,2,0"/>
+                                <TextBlock Text="{TemplateBinding Tag}"
+                                       Foreground="{StaticResource SecondaryTextColor}"
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ControlHoverBackgroundColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryAccentColor}"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ControlHoverBackgroundColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="PasswordBox">
+            <Setter Property="Background" Value="{StaticResource ControlBackgroundColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="utils:PasswordBoxHelper.IsMonitoring" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="2,0,2,0"/>
+                                <TextBlock Text="{TemplateBinding Tag}"
+                                       Foreground="{StaticResource SecondaryTextColor}"
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding (utils:PasswordBoxHelper.PasswordLength), RelativeSource={RelativeSource TemplatedParent}}" Value="0">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ControlHoverBackgroundColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryAccentColor}"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ControlHoverBackgroundColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="EyeToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource SecondaryTextColor}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="content" Property="Content" Value="👁"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="content" Property="Content" Value="🙈"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="12" Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="{StaticResource ControlBackgroundColor}" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="20" Color="Black" Opacity="0.5"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Height="50" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Background="Transparent">
+                <Button Content="✕" Click="CloseButton_Click" Cursor="Hand" FontWeight="Bold" FontSize="14" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Width="30" Height="30">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="{StaticResource SecondaryTextColor}"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF4C4C"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                <StackPanel Margin="40,4,40,0" VerticalAlignment="Top">
+                    <TextBlock Text="Добро пожаловать!" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryTextColor}" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                    <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Tag="Имя пользователя" Margin="0,0,0,15"/>
+                    <Grid Margin="0,0,0,30">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource SecondaryTextColor}"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="12,0,0,0"/>
+                                <Setter Property="IsHitTestVisible" Value="False"/>
+                            </Style>
+                        </Grid.Resources>
+
+                        <PasswordBox x:Name="PasswordBoxHidden"
+                                     Tag="Пароль"
+                                     utils:PasswordBoxHelper.IsMonitoring="True"
+                                     Style="{StaticResource {x:Type PasswordBox}}"
+                                     Visibility="{Binding IsPasswordVisible, Converter={StaticResource InverseBooleanConverter}, Mode=OneWay}"/>    
+
+                        <TextBox x:Name="PasswordBoxVisible"
+                                 Text="{Binding VisiblePassword, UpdateSourceTrigger=PropertyChanged}"
+                                 Tag="Пароль"
+                                 Style="{StaticResource {x:Type TextBox}}"
+                                 Visibility="{Binding IsPasswordVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
+
+                        <ToggleButton x:Name="TogglePasswordVisibility"
+                                      Style="{StaticResource EyeToggleButtonStyle}"
+                                      IsChecked="{Binding IsPasswordVisible, Mode=TwoWay}" HorizontalAlignment="Left" Height="24" Margin="284,0,0,0" Width="24"/>
+                    </Grid>
+
+                    <Button Content="Войти" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordBox}" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,0,10"/>
+                    <Button Content="Зарегистрироваться" Command="{Binding RegisterCommand}" CommandParameter="{Binding ElementName=PasswordBox}" Style="{StaticResource SecondaryButtonStyle}"/>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Bottom" Margin="40,0,40,20">
+                    <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap" Foreground="{StaticResource SecondaryTextColor}" TextAlignment="Center" MinHeight="20" Height="9"/>
+                    <ProgressBar IsIndeterminate="{Binding IsBusy}" Height="4" BorderThickness="0" Background="Transparent" Foreground="{StaticResource PrimaryAccentColor}" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
